@@ -54,6 +54,28 @@ public class AddressBookService {
 	public void addContactToAddressBook(String firstName, String lastName, String address, String city, String state,
 			int zip, String mobileNumber, String emailId) throws AddressBookException, Exception {
 		// TODO Auto-generated method stub
+		boolean index = true;
+		for (Contacts contacts : addressBookList) {
+			if ((firstName.equals(contacts.getFirstName()) && lastName.equals(contacts.getLastName())
+					&& address.equals(contacts.getAddress()))
+					|| (firstName.equals(contacts.getFirstName()) && lastName.equals(contacts.getLastName())
+							&& city.equals(contacts.getCity()))
+					|| (firstName.equals(contacts.getFirstName()) && lastName.equals(contacts.getLastName())
+							&& state.equals(contacts.getState()))) {
+				System.out.println("Oops!! The person is already registered. Please enter a valid entry.");
+				index = false;
+				break;
+			}
+			if (mobileNumber.equals(contacts.getMobileNumber()) || emailId.equals(contacts.getEmailId())) {
+				System.out.println(
+						"Oops!! The person is already registered with the same emailId or mobile number. Please enter a valid entry.");
+				index = false;
+				break;
+			}
+		}
+		if (index == false) {
+			System.exit(0);
+		}
 		addressBookList.add(addressBookDBService.addContactToAddressBook(firstName, lastName, address, city, state, zip,
 				mobileNumber, emailId));
 	}

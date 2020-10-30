@@ -95,6 +95,7 @@ public class addressBookTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void givenNewAddressBook_WhenAdded_ShouldSyncWithDB() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
@@ -103,6 +104,16 @@ public class addressBookTestClass {
 		addressBookService.addNewAddressBook("type4");
 
 		boolean result = addressBookService.checkTypicalAddressBookInSyncWithDB("type3");
+		Assert.assertTrue(result);
+	}
+
+	@Test
+	public void givenNewContact_WhenAdded_ShouldNotBeADuplicateAndShouldSyncWithDB() throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		addressBookService.readAddressBookData();
+		addressBookService.addContactToAddressBook("sammy", "jain", "iiitdmJabalpur", "jabalpr", "mpreadhes", 482005,
+				"780813216", "2016224@iiItdmj.ac.innn");
+		boolean result = addressBookService.checkAddressBookInSyncWithDB("sammy");
 		Assert.assertTrue(result);
 	}
 }
