@@ -2,6 +2,7 @@ package com.addressBook.JDBC_practice;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.Assert;
@@ -24,6 +25,7 @@ public class addressBookTestClass {
 		Assert.assertEquals(2, AddressBookData.size());
 	}
 
+	@Ignore
 	@Test
 	public void givenNewContact_WhenAdded_ShouldSyncWithDB() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
@@ -34,4 +36,19 @@ public class addressBookTestClass {
 		Assert.assertTrue(result);
 	}
 
+	@Test
+	public void givenNewEmailIdForContact_WhenUpdated_ShouldSyncWithDB() throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		try {
+			List<Contacts> AddressBookData = addressBookService.readAddressBookData();
+
+			addressBookService.updateContactEmailId("samyak", "jainsamyak941998@gmail.com");
+
+			boolean result = addressBookService.checkAddressBookInSyncWithDB("samyak");
+			Assert.assertTrue(result);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new AddressBookException("Oops there's an exception!");
+		}
+	}
 }

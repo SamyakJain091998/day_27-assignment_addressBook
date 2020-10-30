@@ -137,6 +137,25 @@ public class AddressBookDBService {
 		return addressBookList;
 	}
 
+	public int updateContactData(String firstName, String emailId) throws AddressBookException, Exception {
+		// TODO Auto-generated method stub
+		return this.updateEmployeeDataUsingStatement(firstName, emailId);
+	}
+
+	private int updateEmployeeDataUsingStatement(String firstName, String emailId)
+			throws AddressBookException, Exception {
+		// TODO Auto-generated method stub
+		String sql = String.format("update address_book_table set emailId = '%s' where firstName = '%s';", emailId,
+				firstName);
+		try (Connection connection = this.getConnection();) {
+			Statement statement = connection.createStatement();
+			return statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO: handle exception
+			throw new AddressBookException("Oops there's an exception!");
+		}
+	}
+
 	private void prepareStatementForAddressBook(String sql) throws Exception {
 		Connection connection = this.getConnection();
 		try {

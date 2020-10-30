@@ -50,6 +50,26 @@ public class AddressBookService {
 			throw new AddressBookException("Oops there's an exception!");
 		}
 		// TODO Auto-generated method stub
+//		System.out.println(addressBookDataList.get(0).getEmailId());
 		return addressBookDataList.get(0).equals(getAddressBookData(firstName));
+	}
+
+	public void updateContactEmailId(String firstName, String emailId) {
+		// TODO Auto-generated method stub
+		int result;
+		try {
+			result = addressBookDBService.updateContactData(firstName, emailId);
+			if (result == 0)
+				return;
+			Contacts addressBookData = this.getAddressBookData(firstName);
+			if (addressBookData != null)
+				addressBookData.setEmailId(emailId);
+		} catch (AddressBookException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
