@@ -41,6 +41,29 @@ public class AddressBookService {
 				mobileNumber, emailId));
 	}
 
+	public void addContactToAddressBook(List<Contacts> contactsList) throws Exception {
+		// TODO Auto-generated method stub
+		contactsList.forEach(addressBookData -> {
+			try {
+				System.out.println("Contact being added : " + addressBookData.getFirstName());
+
+				this.addContactToAddressBook(addressBookData.getFirstName(), addressBookData.getLastName(),
+						addressBookData.getAddress(), addressBookData.getCity(), addressBookData.getState(),
+						addressBookData.getZip(), addressBookData.getMobileNumber(), addressBookData.getEmailId());
+				System.out.println("Employee added : " + addressBookData.getFirstName());
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				try {
+					throw new AddressBookException("Oops there's an exception!!!");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+	}
+
 	public boolean checkAddressBookInSyncWithDB(String firstName) throws Exception {
 		List<Contacts> addressBookDataList;
 		try {

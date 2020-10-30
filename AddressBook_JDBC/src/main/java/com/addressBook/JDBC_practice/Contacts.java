@@ -15,9 +15,8 @@ public class Contacts {
 
 	}
 
-	public Contacts(int id, String firstName, String lastName, String address, String city, String state, int zip,
+	public Contacts(String firstName, String lastName, String address, String city, String state, int zip,
 			String mobileNumber, String emailId) {
-		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
@@ -26,6 +25,12 @@ public class Contacts {
 		this.zip = zip;
 		this.mobileNumber = mobileNumber;
 		this.emailId = emailId;
+	}
+
+	public Contacts(int id, String firstName, String lastName, String address, String city, String state, int zip,
+			String mobileNumber, String emailId) {
+		this(firstName, lastName, address, city, state, zip, mobileNumber, emailId);
+		this.id = id;
 	}
 
 	///////// SETTERS//////////
@@ -92,7 +97,7 @@ public class Contacts {
 		return state;
 	}
 
-	public long getZip() {
+	public int getZip() {
 		return zip;
 	}
 

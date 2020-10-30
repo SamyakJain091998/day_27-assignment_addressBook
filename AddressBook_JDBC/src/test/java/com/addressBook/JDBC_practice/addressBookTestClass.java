@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -53,6 +54,7 @@ public class addressBookTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void givenFirstNameOfContact_WhenContactDeleted_ShouldSyncWithDB() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
@@ -63,6 +65,29 @@ public class addressBookTestClass {
 
 			boolean result = addressBookService.checkAddressBookInSyncWithDB("manu");
 			Assert.assertEquals(false, result);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new AddressBookException("Oops there's an exception!");
+		}
+	}
+
+	@Test
+	public void givenMultipleContacts_WhenAdded_ShouldSyncWithDB() throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		try {
+			List<Contacts> AddressBookData = addressBookService.readAddressBookData();
+
+			Contacts[] arrayOfContacts = {
+					new Contacts("dummy1", "lastNameDummy1", "iiitdmj", "jabalpur", "mp", 482005, "7580813216",
+							"2016224@iiitdmj.ac.in"),
+					new Contacts("dummy2", "lastNameDummy2", "Pdpmiiitdmj", "jbp", "madhya pradesh", 482005,
+							"7580813216", "2016224@iiitdmj.ac.in"),
+					new Contacts("dummy3", "lastNameDummy3", "iiit", "jblpr", "centrl india", 482005, "7580813216",
+							"2016224@iiitdmj.ac.in") };
+
+			addressBookService.addContactToAddressBook(Arrays.asList(arrayOfContacts));
+			boolean result = addressBookService.checkAddressBookInSyncWithDB("dummy1");
+			Assert.assertEquals(true, result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			throw new AddressBookException("Oops there's an exception!");
