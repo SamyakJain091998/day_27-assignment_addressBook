@@ -6,6 +6,7 @@ import java.util.List;
 
 public class AddressBookService {
 	private List<Contacts> addressBookList;
+	private List<AddressBook> typicalAddressBookList;
 
 	private AddressBookDBService addressBookDBService;
 
@@ -25,6 +26,13 @@ public class AddressBookService {
 		return this.addressBookList;
 	}
 
+	public List<AddressBook> readTypicalAddressBookData() throws Exception {
+		// TODO Auto-generated method stub
+		this.typicalAddressBookList = addressBookDBService.readAddressBookData();
+
+		return this.typicalAddressBookList;
+	}
+
 	private Contacts getAddressBookData(String firstName) {
 		// TODO Auto-generated method stub
 		Contacts addressBookData;
@@ -34,11 +42,31 @@ public class AddressBookService {
 		return addressBookData;
 	}
 
+	private AddressBook getTypicalAddressBookData(String address_book_name) {
+		// TODO Auto-generated method stub
+		AddressBook typicalAddressBookData;
+		typicalAddressBookData = this.typicalAddressBookList.stream().filter(
+				typicalAddressBookDataItem -> typicalAddressBookDataItem.getAddressBookName().equals(address_book_name))
+				.findFirst().orElse(null);
+		return typicalAddressBookData;
+	}
+
 	public void addContactToAddressBook(String firstName, String lastName, String address, String city, String state,
 			int zip, String mobileNumber, String emailId) throws AddressBookException, Exception {
 		// TODO Auto-generated method stub
 		addressBookList.add(addressBookDBService.addContactToAddressBook(firstName, lastName, address, city, state, zip,
 				mobileNumber, emailId));
+	}
+
+	public void addNewAddressBook(String address_book_name) throws AddressBookException, Exception {
+		// TODO Auto-generated method stub
+		for (AddressBook addressBookObj : typicalAddressBookList) {
+			if (address_book_name.equals(addressBookObj.getAddressBookName())) {
+				System.out.println("Oops the addressBook with this name already exists!");
+				System.exit(0);
+			}
+		}
+		typicalAddressBookList.add(addressBookDBService.addNewAddressBook(address_book_name));
 	}
 
 	public void addContactToAddressBook(List<Contacts> contactsList) throws Exception {
@@ -78,6 +106,22 @@ public class AddressBookService {
 			return false;
 		}
 		return addressBookDataList.get(0).equals(getAddressBookData(firstName));
+	}
+
+	public boolean checkTypicalAddressBookInSyncWithDB(String address_book_name) throws Exception {
+		List<AddressBook> typicalAddressBookDataList;
+		try {
+			typicalAddressBookDataList = addressBookDBService.getTypicalAddressBookData(address_book_name);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new AddressBookException("Oops there's an exception!!!");
+		}
+		// TODO Auto-generated method stub
+//		System.out.println(addressBookDataList.get(0).getEmailId());
+		if (typicalAddressBookDataList.size() == 0) {
+			return false;
+		}
+		return typicalAddressBookDataList.get(0).equals(getTypicalAddressBookData(address_book_name));
 	}
 
 	public void updateContactEmailId(String firstName, String emailId) {

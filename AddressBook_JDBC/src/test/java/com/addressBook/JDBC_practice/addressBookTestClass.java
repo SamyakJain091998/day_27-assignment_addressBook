@@ -71,6 +71,7 @@ public class addressBookTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void givenMultipleContacts_WhenAdded_ShouldSyncWithDB() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
@@ -94,4 +95,14 @@ public class addressBookTestClass {
 		}
 	}
 
+	@Test
+	public void givenNewAddressBook_WhenAdded_ShouldSyncWithDB() throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		List<AddressBook> typicalAddressBookList = addressBookService.readTypicalAddressBookData();
+
+		addressBookService.addNewAddressBook("type4");
+
+		boolean result = addressBookService.checkTypicalAddressBookInSyncWithDB("type3");
+		Assert.assertTrue(result);
+	}
 }

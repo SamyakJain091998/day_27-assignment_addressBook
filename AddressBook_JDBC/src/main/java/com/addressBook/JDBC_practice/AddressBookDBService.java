@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.math3.analysis.function.Add;
+
 public class AddressBookDBService {
 	private PreparedStatement addressBookDataStatement;
 	private static AddressBookDBService addressBookDBService;
@@ -66,6 +68,28 @@ public class AddressBookDBService {
 		return addressBookList;
 	}
 
+	public List<AddressBook> readAddressBookData() throws Exception {
+		String sql = "SELECT * from address_book";
+		List<AddressBook> typicalAddressBookList = new ArrayList<>();
+		Connection connection = this.getConnection();
+		System.out.println("Creating statement..");
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			System.out.println("Statement created successfully..");
+			ResultSet resultSet = statement.executeQuery(sql);
+			typicalAddressBookList = this.getTypicalAddressBookData(resultSet);
+
+//			resultSet.close();
+//			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new AddressBookException("Oops there's an exception!");
+		}
+		return typicalAddressBookList;
+	}
+
 	private List<Contacts> getAddressBookData(ResultSet resultSet) throws Exception {
 		// TODO Auto-generated method stub
 		List<Contacts> addressBookList = new ArrayList<>();
@@ -87,6 +111,25 @@ public class AddressBookDBService {
 				addressBookList.add(addressBookData);
 			}
 			return addressBookList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new AddressBookException("Oops there's an exception!");
+		}
+	}
+
+	private List<AddressBook> getTypicalAddressBookData(ResultSet resultSet) throws Exception {
+		// TODO Auto-generated method stub
+		List<AddressBook> typicalAddressBookList = new ArrayList<>();
+		AddressBook typicalAddressBookData = null;
+		try {
+			while (resultSet.next()) {
+				int id = resultSet.getInt("id");
+				String address_book_name = resultSet.getString("address_book_name");
+
+				typicalAddressBookData = new AddressBook(id, address_book_name);
+				typicalAddressBookList.add(typicalAddressBookData);
+			}
+			return typicalAddressBookList;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			throw new AddressBookException("Oops there's an exception!");
@@ -120,6 +163,29 @@ public class AddressBookDBService {
 		return addressBookData;
 	}
 
+	public AddressBook addNewAddressBook(String address_book_name) throws AddressBookException, Exception {
+		// TODO Auto-generated method stub
+		int id = -1;
+		AddressBook typicalAddressBookData = null;
+		String sql = String.format("INSERT INTO address_book ( address_book_name ) " + "VALUES ('%s')",
+				address_book_name);
+		try (Connection connection = this.getConnection()) {
+			Statement statement = connection.createStatement();
+			int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
+			if (rowAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if (resultSet.next())
+					id = resultSet.getInt(1);
+			}
+			typicalAddressBookData = new AddressBook(id, address_book_name);
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new AddressBookException("Oops there's an exception here!");
+
+		}
+		return typicalAddressBookData;
+	}
+
 	public List<Contacts> getAddressBookData(String firstName) throws Exception {
 		// TODO Auto-generated method stub
 		List<Contacts> addressBookList = null;
@@ -136,6 +202,24 @@ public class AddressBookDBService {
 				throw new AddressBookException("Oops there's an exception!");
 			}
 		return addressBookList;
+	}
+
+	public List<AddressBook> getTypicalAddressBookData(String address_book_name) throws Exception {
+		// TODO Auto-generated method stub
+		List<AddressBook> typicalAddressBookList = null;
+		if (this.addressBookDataStatement == null)
+			try {
+				String sql = "SELECT * FROM address_book WHERE address_book_name = ?";
+				this.prepareStatementForAddressBook(sql);
+				addressBookDataStatement.setString(1, address_book_name);
+				ResultSet resultSet = addressBookDataStatement.executeQuery();
+				typicalAddressBookList = this.getTypicalAddressBookData(resultSet);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new AddressBookException("Oops there's an exception!");
+			}
+		return typicalAddressBookList;
 	}
 
 	public int updateContactData(String firstName, String emailId) throws AddressBookException, Exception {
