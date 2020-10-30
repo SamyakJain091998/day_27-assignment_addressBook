@@ -47,10 +47,13 @@ public class AddressBookService {
 			addressBookDataList = addressBookDBService.getAddressBookData(firstName);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new AddressBookException("Oops there's an exception!");
+			throw new AddressBookException("Oops there's an exception!!!");
 		}
 		// TODO Auto-generated method stub
 //		System.out.println(addressBookDataList.get(0).getEmailId());
+		if (addressBookDataList.size() == 0) {
+			return false;
+		}
 		return addressBookDataList.get(0).equals(getAddressBookData(firstName));
 	}
 
@@ -64,6 +67,27 @@ public class AddressBookService {
 			Contacts addressBookData = this.getAddressBookData(firstName);
 			if (addressBookData != null)
 				addressBookData.setEmailId(emailId);
+		} catch (AddressBookException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteContact(String firstName) {
+		// TODO Auto-generated method stub
+		int result;
+		try {
+			result = addressBookDBService.deleteContactData(firstName);
+
+			if (result == 0)
+				return;
+			Contacts addressBookData = this.getAddressBookData(firstName);
+			if (addressBookData != null) {
+				addressBookList.remove(addressBookList.indexOf(addressBookData));
+			}
 		} catch (AddressBookException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

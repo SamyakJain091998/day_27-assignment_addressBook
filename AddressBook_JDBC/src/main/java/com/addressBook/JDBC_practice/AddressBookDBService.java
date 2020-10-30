@@ -132,6 +132,7 @@ public class AddressBookDBService {
 				addressBookList = this.getAddressBookData(resultSet);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
 				throw new AddressBookException("Oops there's an exception!");
 			}
 		return addressBookList;
@@ -142,11 +143,28 @@ public class AddressBookDBService {
 		return this.updateEmployeeDataUsingStatement(firstName, emailId);
 	}
 
+	public int deleteContactData(String firstName) throws AddressBookException, Exception {
+		// TODO Auto-generated method stub
+		return this.deleteEmployeeDataUsingStatement(firstName);
+	}
+
 	private int updateEmployeeDataUsingStatement(String firstName, String emailId)
 			throws AddressBookException, Exception {
 		// TODO Auto-generated method stub
 		String sql = String.format("update address_book_table set emailId = '%s' where firstName = '%s';", emailId,
 				firstName);
+		try (Connection connection = this.getConnection();) {
+			Statement statement = connection.createStatement();
+			return statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO: handle exception
+			throw new AddressBookException("Oops there's an exception!");
+		}
+	}
+
+	private int deleteEmployeeDataUsingStatement(String firstName) throws AddressBookException, Exception {
+		// TODO Auto-generated method stub
+		String sql = String.format("delete from address_book_table where firstName = '%s';", firstName);
 		try (Connection connection = this.getConnection();) {
 			Statement statement = connection.createStatement();
 			return statement.executeUpdate(sql);

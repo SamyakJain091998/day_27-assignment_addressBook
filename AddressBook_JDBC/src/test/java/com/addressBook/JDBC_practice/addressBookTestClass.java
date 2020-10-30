@@ -36,6 +36,7 @@ public class addressBookTestClass {
 		Assert.assertTrue(result);
 	}
 
+	@Ignore
 	@Test
 	public void givenNewEmailIdForContact_WhenUpdated_ShouldSyncWithDB() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
@@ -51,4 +52,21 @@ public class addressBookTestClass {
 			throw new AddressBookException("Oops there's an exception!");
 		}
 	}
+
+	@Test
+	public void givenFirstNameOfContact_WhenContactDeleted_ShouldSyncWithDB() throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		try {
+			List<Contacts> AddressBookData = addressBookService.readAddressBookData();
+
+			addressBookService.deleteContact("manu");
+
+			boolean result = addressBookService.checkAddressBookInSyncWithDB("manu");
+			Assert.assertEquals(false, result);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new AddressBookException("Oops there's an exception!");
+		}
+	}
+
 }
