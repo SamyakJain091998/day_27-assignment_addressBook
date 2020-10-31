@@ -2,6 +2,8 @@ package com.addressBook.JDBC_practice;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,5 +215,17 @@ public class AddressBookService {
 			stateMap.put(placeType.toLowerCase(), contactsList);
 		}
 		return contactsList;
+	}
+
+	public List<Contacts> sortContactsBasisContactName() throws Exception {
+		// TODO Auto-generated method stub
+		this.addressBookList = addressBookDBService.readData();
+		Collections.sort(addressBookList, new Comparator<Contacts>() {
+			@Override
+			public int compare(Contacts contact1, Contacts contact2) {
+				return contact1.getFirstName().compareToIgnoreCase(contact2.getFirstName());
+			}
+		});
+		return this.addressBookList;
 	}
 }

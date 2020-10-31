@@ -131,6 +131,7 @@ public class addressBookTestClass {
 		Assert.assertEquals(3, matchingContactsList.size());
 	}
 
+	@Ignore
 	@Test
 	public void givenACityOrState_WhenQueriedUpon_ShouldCreateADictionaryOfPersonLivingInTheCityOrTheState()
 			throws Exception {
@@ -142,4 +143,16 @@ public class addressBookTestClass {
 
 		Assert.assertEquals(3, matchingContactsList.size());
 	}
+
+	@Test
+	public void givenAddressBook_WhenSortedBasisContactName_ShouldReturnTheList() throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		List<Contacts> addressBookList = addressBookService.readAddressBookData();
+
+//		addressBookService.queryBasisPlace("ujjain", "city");
+		List<Contacts> matchingContactsList = addressBookService.sortContactsBasisContactName();
+		System.out.println(matchingContactsList);
+		Assert.assertEquals(true, true);
+	}
+
 }
