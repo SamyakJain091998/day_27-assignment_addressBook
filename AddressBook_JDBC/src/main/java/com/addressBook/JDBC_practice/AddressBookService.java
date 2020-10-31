@@ -2,11 +2,15 @@ package com.addressBook.JDBC_practice;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookService {
 	private List<Contacts> addressBookList;
 	private List<AddressBook> typicalAddressBookList;
+	private HashMap<String, List<Contacts>> cityMap = new HashMap<String, List<Contacts>>();
+	private HashMap<String, List<Contacts>> stateMap = new HashMap<String, List<Contacts>>();
 
 	private AddressBookDBService addressBookDBService;
 
@@ -198,6 +202,15 @@ public class AddressBookService {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		if (contactsList.size() == 0) {
+			return null;
+		}
+		if (placeType.toLowerCase().equals("city")) {
+			cityMap.put(placeType.toLowerCase(), contactsList);
+		}
+		if (placeType.toLowerCase().equals("state")) {
+			stateMap.put(placeType.toLowerCase(), contactsList);
 		}
 		return contactsList;
 	}
