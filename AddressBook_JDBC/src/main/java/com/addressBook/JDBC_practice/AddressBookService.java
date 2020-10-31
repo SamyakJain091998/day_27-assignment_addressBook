@@ -185,4 +185,20 @@ public class AddressBookService {
 			e.printStackTrace();
 		}
 	}
+
+	public List<Contacts> queryBasisPlace(String placeName, String placeType) {
+		// TODO Auto-generated method stub
+		int result;
+		List<Contacts> contactsList = null;
+		try {
+			contactsList = addressBookDBService.retrievePlaceDetails(placeName, placeType);
+		} catch (AddressBookException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return contactsList;
+	}
 }

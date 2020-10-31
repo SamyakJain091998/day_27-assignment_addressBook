@@ -246,6 +246,34 @@ public class AddressBookDBService {
 		}
 	}
 
+	public List<Contacts> retrievePlaceDetails(String placeName, String placeType)
+			throws AddressBookException, Exception {
+		// TODO Auto-generated method stub
+		List<Contacts> addressBookList = null;
+		placeType = placeType.toLowerCase();
+		if (this.addressBookDataStatement == null) {
+			try {
+				String sql = null;
+				if (placeType == "city") {
+					sql = String.format("select * from address_book_table where city = '%s';", placeName);
+				} else if (placeType == "state") {
+					sql = String.format("select * from address_book_table where state = '%s';", placeName);
+				} else {
+					System.out.println("You entered a wrong place type. PLease check and retry..");
+					System.exit(0);
+				}
+				this.prepareStatementForAddressBook(sql);
+				ResultSet resultSet = addressBookDataStatement.executeQuery();
+				addressBookList = this.getAddressBookData(resultSet);
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				throw new AddressBookException("Oops there's an exception!");
+			}
+		}
+		return addressBookList;
+	}
+
 	private int deleteEmployeeDataUsingStatement(String firstName) throws AddressBookException, Exception {
 		// TODO Auto-generated method stub
 		String sql = String.format("delete from address_book_table where firstName = '%s';", firstName);

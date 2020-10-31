@@ -107,6 +107,7 @@ public class addressBookTestClass {
 		Assert.assertTrue(result);
 	}
 
+	@Ignore
 	@Test
 	public void givenNewContact_WhenAdded_ShouldNotBeADuplicateAndShouldSyncWithDB() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
@@ -115,5 +116,17 @@ public class addressBookTestClass {
 				"780813216", "2016224@iiItdmj.ac.innn");
 		boolean result = addressBookService.checkAddressBookInSyncWithDB("sammy");
 		Assert.assertTrue(result);
+	}
+
+	@Test
+	public void givenACityOrState_WhenQueriedUpon_ShouldReturnTheNumberOfPersonLivingInTheCityOrTheState()
+			throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		List<Contacts> addressBookList = addressBookService.readAddressBookData();
+
+//		addressBookService.queryBasisPlace("ujjain", "city");
+		List<Contacts> matchingContactsList = addressBookService.queryBasisPlace("mp", "state");
+
+		Assert.assertEquals(3, matchingContactsList.size());
 	}
 }
