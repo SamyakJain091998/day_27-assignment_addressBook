@@ -228,4 +228,33 @@ public class AddressBookService {
 		});
 		return this.addressBookList;
 	}
+
+	public List<Contacts> sortContactsBasisCityStateOrZip(String sortingBasis) throws Exception {
+		// TODO Auto-generated method stub
+		this.addressBookList = addressBookDBService.readData();
+		sortingBasis = sortingBasis.toLowerCase();
+		if (sortingBasis.equals("city")) {
+			Collections.sort(addressBookList, new Comparator<Contacts>() {
+				@Override
+				public int compare(Contacts contact1, Contacts contact2) {
+					return contact1.getCity().compareToIgnoreCase(contact2.getCity());
+				}
+			});
+		} else if (sortingBasis.equals("state")) {
+			Collections.sort(addressBookList, new Comparator<Contacts>() {
+				@Override
+				public int compare(Contacts contact1, Contacts contact2) {
+					return contact1.getState().compareToIgnoreCase(contact2.getState());
+				}
+			});
+		} else if (sortingBasis.equals("zip")) {
+			Collections.sort(addressBookList, new Comparator<Contacts>() {
+				@Override
+				public int compare(Contacts contact1, Contacts contact2) {
+					return contact1.getZip() - contact2.getZip();
+				}
+			});
+		}
+		return this.addressBookList;
+	}
 }

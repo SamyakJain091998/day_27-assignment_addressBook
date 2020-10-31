@@ -144,13 +144,28 @@ public class addressBookTestClass {
 		Assert.assertEquals(3, matchingContactsList.size());
 	}
 
+	@Ignore
 	@Test
-	public void givenAddressBook_WhenSortedBasisContactName_ShouldReturnTheList() throws Exception {
+	public void givenAddressBook_WhenSortedBasisContactName_ShouldReturnTheSortedList() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
 		List<Contacts> addressBookList = addressBookService.readAddressBookData();
 
 //		addressBookService.queryBasisPlace("ujjain", "city");
 		List<Contacts> matchingContactsList = addressBookService.sortContactsBasisContactName();
+		System.out.println(matchingContactsList);
+		Assert.assertEquals(true, true);
+	}
+
+	@Test
+	public void givenAddressBook_WhenSortedBasisCityStateOrZip_ShouldReturnTheSortedList() throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		List<Contacts> addressBookList = addressBookService.readAddressBookData();
+		List<Contacts> matchingContactsList = null;
+
+		matchingContactsList = addressBookService.sortContactsBasisCityStateOrZip("city");
+//		matchingContactsList = addressBookService.sortContactsBasisCityStateOrZip("state");
+//		matchingContactsList = addressBookService.sortContactsBasisCityStateOrZip("zip");
+
 		System.out.println(matchingContactsList);
 		Assert.assertEquals(true, true);
 	}
