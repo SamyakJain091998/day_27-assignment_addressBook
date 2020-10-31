@@ -1,5 +1,7 @@
 package com.addressBook.JDBC_practice;
 
+import java.sql.Date;
+
 public class Contacts {
 	private int id;
 	private String firstName;

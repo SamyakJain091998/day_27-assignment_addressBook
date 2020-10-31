@@ -222,6 +222,27 @@ public class AddressBookDBService {
 		return typicalAddressBookList;
 	}
 
+	public List<Contacts> queryForContactDetailsBetweenAParticularPeriod(LocalDate date1, LocalDate date2)
+			throws Exception {
+		// TODO Auto-generated method stub
+		List<Contacts> addressBookList = null;
+		if (this.addressBookDataStatement == null)
+			try {
+				String sql = "SELECT * FROM address_book_table WHERE date_added BETWEEN CAST(? as date) and CAST(? as date)";
+				this.prepareStatementForAddressBook(sql);
+				addressBookDataStatement.setDate(1, Date.valueOf(date1));
+				addressBookDataStatement.setDate(2, Date.valueOf(date2));
+
+				ResultSet resultSet = addressBookDataStatement.executeQuery();
+				addressBookList = this.getAddressBookData(resultSet);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new AddressBookException("Oops there's an exception!");
+			}
+		return addressBookList;
+	}
+
 	public int updateContactData(String firstName, String emailId) throws AddressBookException, Exception {
 		// TODO Auto-generated method stub
 		return this.updateEmployeeDataUsingStatement(firstName, emailId);
@@ -295,4 +316,5 @@ public class AddressBookDBService {
 			throw new AddressBookException("Oops there's an exception!");
 		}
 	}
+
 }

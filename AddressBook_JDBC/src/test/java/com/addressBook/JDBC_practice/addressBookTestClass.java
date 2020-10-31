@@ -156,6 +156,7 @@ public class addressBookTestClass {
 		Assert.assertEquals(true, true);
 	}
 
+	@Ignore
 	@Test
 	public void givenAddressBook_WhenSortedBasisCityStateOrZip_ShouldReturnTheSortedList() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
@@ -168,6 +169,19 @@ public class addressBookTestClass {
 
 		System.out.println(matchingContactsList);
 		Assert.assertEquals(true, true);
+	}
+
+	@Test
+	public void givenAddressBook_WhenDataRetrieved_ShouldReturnNumberOfContactDetailsAddedInAParticularDate()
+			throws Exception {
+		AddressBookService addressBookService = new AddressBookService();
+		List<Contacts> addressBookList = addressBookService.readAddressBookData();
+
+		LocalDate date1 = LocalDate.of(2017, 1, 1);
+		LocalDate date2 = LocalDate.of(2020, 12, 30);
+		int countOfContacts = addressBookService.getDetailsBetweenAPeriod(date1, date2);
+
+		Assert.assertEquals(7, countOfContacts);
 	}
 
 }

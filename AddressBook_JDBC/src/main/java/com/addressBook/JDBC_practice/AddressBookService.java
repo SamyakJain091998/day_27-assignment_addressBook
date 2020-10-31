@@ -257,4 +257,22 @@ public class AddressBookService {
 		}
 		return this.addressBookList;
 	}
+
+	public int getDetailsBetweenAPeriod(LocalDate date1, LocalDate date2) throws AddressBookException, Exception {
+		// TODO Auto-generated method stub
+		List<Contacts> resultList;
+		try {
+			resultList = addressBookDBService.queryForContactDetailsBetweenAParticularPeriod(date1, date2);
+		} catch (AddressBookException e) {
+			// TODO Auto-generated catch block
+			throw new AddressBookException("Oops there's an exception!!!");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new AddressBookException("Oops there's an exception!!!");
+		}
+		if (resultList == null) {
+			return 0;
+		}
+		return resultList.size();
+	}
 }
