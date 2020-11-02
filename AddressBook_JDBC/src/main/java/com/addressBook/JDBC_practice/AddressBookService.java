@@ -84,6 +84,7 @@ public class AddressBookService {
 		}
 		addressBookList.add(addressBookDBService.addContactToAddressBook(firstName, lastName, address, city, state, zip,
 				mobileNumber, emailId));
+		System.out.println("++++++Added+++++++");
 	}
 
 	public void addNewAddressBook(String address_book_name) throws AddressBookException, Exception {
@@ -118,6 +119,55 @@ public class AddressBookService {
 				}
 			}
 		});
+	}
+
+	public void addContactToAddressBookWithThread(List<Contacts> contactsList) throws Exception {
+		// TODO Auto-generated method stub
+		Map<Integer, Boolean> contactAdditionStatus = new HashMap<Integer, Boolean>();
+
+		contactsList.forEach(contactData -> {
+			Runnable task = () -> {
+				contactAdditionStatus.put(contactData.hashCode(), false);
+
+				try {
+					System.out.println("Contact being added : " + Thread.currentThread().getName());
+
+					this.addContactToAddressBook(contactData.getFirstName(), contactData.getLastName(),
+							contactData.getAddress(), contactData.getCity(), contactData.getState(),
+							contactData.getZip(), contactData.getMobileNumber(), contactData.getEmailId());
+
+					contactAdditionStatus.put(contactData.hashCode(), true);
+
+					System.out.println("Contact added : " + Thread.currentThread().getName());
+				} catch (AddressBookException e) {
+					// TODO Auto-generated catch block
+					try {
+						throw new AddressBookException("Oops there's an exception!!!");
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					try {
+						throw new AddressBookException("Oops there's an exception!!!");
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			};
+			Thread thread = new Thread(task, contactData.getFirstName());
+			thread.start();
+		});
+		while (contactAdditionStatus.containsValue(false)) {
+			try {
+				Thread.sleep(40);
+			} catch (InterruptedException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	public boolean checkAddressBookInSyncWithDB(String firstName) throws Exception {

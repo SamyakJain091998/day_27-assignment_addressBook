@@ -1,6 +1,7 @@
 package com.addressBook.JDBC_practice;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Contacts {
 	private int id;
@@ -113,18 +114,8 @@ public class Contacts {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + id;
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((mobileNumber == null) ? 0 : mobileNumber.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
-		result = prime * result + zip;
-		return result;
+		return Objects.hash(this.firstName, this.lastName, this.address, this.city, this.state, this.zip,
+				this.mobileNumber, this.emailId);
 	}
 
 	@Override

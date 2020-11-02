@@ -16,6 +16,7 @@ import java.util.Map;
 import org.apache.commons.math3.analysis.function.Add;
 
 public class AddressBookDBService {
+	private int connectionCounter = 0;
 	private PreparedStatement addressBookDataStatement;
 	private static AddressBookDBService addressBookDBService;
 
@@ -31,14 +32,17 @@ public class AddressBookDBService {
 	}
 
 	private Connection getConnection() {
+		connectionCounter++;
 		Connection connection = null;
 		final String DB_URL = "jdbc:mysql://localhost:3307/address_book_assignment";
 		final String USER = "root";
 		final String PASS = "Admin@123";
 		try {
-			System.out.println("Connecting to database: " + DB_URL);
+			System.out.println("Processing Thread : " + Thread.currentThread().getName()
+					+ " Connecting to database with id : " + connectionCounter);
 			connection = DriverManager.getConnection(DB_URL, USER, PASS);
-			System.out.println("Connection is successfull..!!" + connection);
+			System.out.println("Processing Thread : " + Thread.currentThread().getName() + " Id : " + connectionCounter
+					+ " Connection is successfuly : " + connection);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
