@@ -2,6 +2,7 @@ package com.addressBook.JDBC_practice;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class AddressBookService {
 
 	public AddressBookService(List<Contacts> addressBookList) {
 		this();
-		this.addressBookList = addressBookList;
+		this.addressBookList = new ArrayList<>(addressBookList);
 	}
 
 	public List<Contacts> readAddressBookData() throws Exception {
@@ -30,6 +31,15 @@ public class AddressBookService {
 		this.addressBookList = addressBookDBService.readData();
 
 		return this.addressBookList;
+	}
+
+	public long countEntries() {
+		return addressBookList.size();
+	}
+
+	public void addContactsToPayroll(Contacts contactData) {
+		// TODO Auto-generated method stub
+		addressBookList.add(contactData);
 	}
 
 	public List<AddressBook> readTypicalAddressBookData() throws Exception {

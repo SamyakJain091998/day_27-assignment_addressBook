@@ -7,8 +7,15 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.hamcrest.*;
+import com.google.gson.*;
+
+import io.restassured.*;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 public class addressBookTestClass {
 
@@ -171,6 +178,7 @@ public class addressBookTestClass {
 		Assert.assertEquals(true, true);
 	}
 
+	@Ignore
 	@Test
 	public void givenAddressBook_WhenDataRetrieved_ShouldReturnNumberOfContactDetailsAddedInAParticularDate()
 			throws Exception {
@@ -184,4 +192,60 @@ public class addressBookTestClass {
 		Assert.assertEquals(7, countOfContacts);
 	}
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@Before
+	public void setup() {
+		RestAssured.baseURI = "http://localhost";
+		RestAssured.port = 3000;
+	}
+
+	public Contacts[] getContactsList() {
+		// TODO Auto-generated method stub
+		Response response = RestAssured.get("/address_book_table");
+		System.out.println("Contact entries in json server -> " + response.asString());
+		Contacts[] arrayOfContacts = new Gson().fromJson(response.asString(), Contacts[].class);
+		return arrayOfContacts;
+	}
+
+	public Response addContactToJsonServer(Contacts ContactData) {
+		// TODO Auto-generated method stub
+		String contactJson = new Gson().toJson(ContactData);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		request.body(contactJson);
+		return request.post("/address_book_table");
+	}
+
+	@Ignore
+	@Test
+	public void givenContacInJsonServer_WhenRetrieved_ShouldMatchTheCount() {
+		Contacts[] arrayOfContacts = getContactsList();
+		AddressBookService addressBookService;
+		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+		long entries = addressBookService.countEntries();
+		System.out.println("----Number of entries : " + entries);
+		Assert.assertEquals(2, entries);
+	}
+
+	@Test
+	public void givenNewContact_WhenAdded_ShouldMatchTheCount() {
+
+		AddressBookService addressBookService;
+		Contacts[] arrayOfContacts = getContactsList();
+		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+
+		Contacts contactData = new Contacts(0, "Sammy", "Jain", "dadabadi", "kota", "rajasthan", 324009, "1234567890",
+				"j.samyakinfo@gmail.com");
+
+		Response response = addContactToJsonServer(contactData);
+		int statusCode = response.getStatusCode();
+		System.out.println("----Status codeis : " + statusCode);
+		Assert.assertEquals(201, statusCode);
+
+		contactData = new Gson().fromJson(response.asString(), Contacts.class);
+		addressBookService.addContactsToPayroll(contactData);
+		long entries = addressBookService.countEntries();
+		System.out.println("----Number of entries : " + entries);
+		Assert.assertEquals(3, entries);
+	}
 }
