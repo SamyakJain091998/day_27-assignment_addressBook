@@ -207,8 +207,6 @@ public class addressBookTestClass {
 			 * + Duration.between(start, end));
 			 */
 
-///////////////////////////////////
-
 			Instant threadStart = Instant.now();
 			addressBookService.addContactToAddressBookWithThread(Arrays.asList(arrayOfContacts));
 			Instant threadEnd = Instant.now();
