@@ -283,6 +283,7 @@ public class addressBookTestClass {
 		Assert.assertEquals(4, entries);
 	}
 
+	@Ignore
 	@Test
 	public void givenNewLastNameForContact_WhenUpdated_ShouldMatch200response() throws AddressBookException {
 
@@ -305,6 +306,34 @@ public class addressBookTestClass {
 		long entries = addressBookService.countEntries();
 		System.out.println("----Number of entries : " + entries);
 		Assert.assertEquals(6, entries);
+	}
+
+	@Test
+	public void givenEmployeeToDelete_WhenDeleted_ShouldMatch200response() throws AddressBookException {
+
+		AddressBookService addressBookService;
+		Contacts[] arrayOfContacts = getContactsList();
+		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+
+		Contacts contactData = addressBookService.getAddressBookData("Manu");
+
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		Response response = request.delete("/address_book_table/" + contactData.getId());
+		int statusCode = response.getStatusCode();
+		Assert.assertEquals(200, statusCode);
+
+		addressBookService.deleteContact(contactData.getFirstName());
+
+		try {
+			boolean result = addressBookService.checkAddressBookInSyncWithDB("Manu");
+			System.out.println("result it : --------------> " + result);
+			Assert.assertFalse(result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }
