@@ -44,16 +44,15 @@ public class addressBookTestClass {
 		Assert.assertTrue(result);
 	}
 
-	@Ignore
 	@Test
 	public void givenNewEmailIdForContact_WhenUpdated_ShouldSyncWithDB() throws Exception {
 		AddressBookService addressBookService = new AddressBookService();
 		try {
 			List<Contacts> AddressBookData = addressBookService.readAddressBookData();
 
-			addressBookService.updateContactEmailId("samyak", "jainsamyak941998@gmail.com");
+			addressBookService.updateContactEmailId("sammy", "jainsamyak941998@gmail.com");
 
-			boolean result = addressBookService.checkAddressBookInSyncWithDB("samyak");
+			boolean result = addressBookService.checkAddressBookInSyncWithDB("sammy");
 			Assert.assertTrue(result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -125,7 +124,6 @@ public class addressBookTestClass {
 		Assert.assertTrue(result);
 	}
 
-	@Ignore
 	@Test
 	public void givenACityOrState_WhenQueriedUpon_ShouldReturnTheNumberOfPersonLivingInTheCityOrTheState()
 			throws Exception {
