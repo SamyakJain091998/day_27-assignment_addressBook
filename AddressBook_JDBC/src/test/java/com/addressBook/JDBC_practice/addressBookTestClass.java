@@ -22,7 +22,7 @@ public class addressBookTestClass {
 	@Ignore
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		Assert.assertTrue(true);
 	}
 
 	@Ignore
@@ -68,9 +68,9 @@ public class addressBookTestClass {
 		try {
 			List<Contacts> AddressBookData = addressBookService.readAddressBookData();
 
-			addressBookService.deleteContact("manu");
+			addressBookService.deleteContact("dummy1");
 
-			boolean result = addressBookService.checkAddressBookInSyncWithDB("manu");
+			boolean result = addressBookService.checkAddressBookInSyncWithDB("dummy1");
 			Assert.assertEquals(false, result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -192,7 +192,8 @@ public class addressBookTestClass {
 		Assert.assertEquals(7, countOfContacts);
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////REST ASSURE start/////////////////////////////////////////////////////////////////
+
 	@Before
 	public void setup() {
 		RestAssured.baseURI = "http://localhost";
@@ -227,6 +228,7 @@ public class addressBookTestClass {
 		Assert.assertEquals(2, entries);
 	}
 
+	@Ignore
 	@Test
 	public void givenNewContact_WhenAdded_ShouldMatchTheCount() {
 
@@ -234,8 +236,8 @@ public class addressBookTestClass {
 		Contacts[] arrayOfContacts = getContactsList();
 		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
 
-		Contacts contactData = new Contacts(0, "Sammy", "Jain", "dadabadi", "kota", "rajasthan", 324009, "1234567890",
-				"j.samyakinfo@gmail.com");
+		Contacts contactData = new Contacts(0, "Sammyy", "Jainn", "dadabadii", "kota", "rajasthan", 324009,
+				"12345678900", "j.samyakinfo@gmail.in");
 
 		Response response = addContactToJsonServer(contactData);
 		int statusCode = response.getStatusCode();

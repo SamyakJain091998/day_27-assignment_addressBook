@@ -27,7 +27,6 @@ public class AddressBookService {
 	}
 
 	public List<Contacts> readAddressBookData() throws Exception {
-		// TODO Auto-generated method stub
 		this.addressBookList = addressBookDBService.readData();
 
 		return this.addressBookList;
@@ -38,19 +37,16 @@ public class AddressBookService {
 	}
 
 	public void addContactsToPayroll(Contacts contactData) {
-		// TODO Auto-generated method stub
 		addressBookList.add(contactData);
 	}
 
 	public List<AddressBook> readTypicalAddressBookData() throws Exception {
-		// TODO Auto-generated method stub
 		this.typicalAddressBookList = addressBookDBService.readAddressBookData();
 
 		return this.typicalAddressBookList;
 	}
 
 	private Contacts getAddressBookData(String firstName) {
-		// TODO Auto-generated method stub
 		Contacts addressBookData;
 		addressBookData = this.addressBookList.stream()
 				.filter(addressBookDataItem -> addressBookDataItem.getFirstName().equals(firstName)).findFirst()
@@ -59,7 +55,6 @@ public class AddressBookService {
 	}
 
 	private AddressBook getTypicalAddressBookData(String address_book_name) {
-		// TODO Auto-generated method stub
 		AddressBook typicalAddressBookData;
 		typicalAddressBookData = this.typicalAddressBookList.stream().filter(
 				typicalAddressBookDataItem -> typicalAddressBookDataItem.getAddressBookName().equals(address_book_name))
@@ -69,7 +64,6 @@ public class AddressBookService {
 
 	public void addContactToAddressBook(String firstName, String lastName, String address, String city, String state,
 			int zip, String mobileNumber, String emailId) throws AddressBookException, Exception {
-		// TODO Auto-generated method stub
 		boolean index = true;
 		for (Contacts contacts : addressBookList) {
 			if ((firstName.equals(contacts.getFirstName()) && lastName.equals(contacts.getLastName())
@@ -97,7 +91,6 @@ public class AddressBookService {
 	}
 
 	public void addNewAddressBook(String address_book_name) throws AddressBookException, Exception {
-		// TODO Auto-generated method stub
 		for (AddressBook addressBookObj : typicalAddressBookList) {
 			if (address_book_name.equals(addressBookObj.getAddressBookName())) {
 				System.out.println("Oops the addressBook with this name already exists!");
@@ -108,7 +101,6 @@ public class AddressBookService {
 	}
 
 	public void addContactToAddressBook(List<Contacts> contactsList) throws Exception {
-		// TODO Auto-generated method stub
 		contactsList.forEach(addressBookData -> {
 			try {
 				System.out.println("Contact being added : " + addressBookData.getFirstName());
@@ -119,11 +111,9 @@ public class AddressBookService {
 				System.out.println("Employee added : " + addressBookData.getFirstName());
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				try {
 					throw new AddressBookException("Oops there's an exception!!!");
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -135,11 +125,8 @@ public class AddressBookService {
 		try {
 			addressBookDataList = addressBookDBService.getAddressBookData(firstName);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			throw new AddressBookException("Oops there's an exception!!!");
 		}
-		// TODO Auto-generated method stub
-//		System.out.println(addressBookDataList.get(0).getEmailId());
 		if (addressBookDataList.size() == 0) {
 			return false;
 		}
@@ -151,11 +138,8 @@ public class AddressBookService {
 		try {
 			typicalAddressBookDataList = addressBookDBService.getTypicalAddressBookData(address_book_name);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			throw new AddressBookException("Oops there's an exception!!!");
 		}
-		// TODO Auto-generated method stub
-//		System.out.println(addressBookDataList.get(0).getEmailId());
 		if (typicalAddressBookDataList.size() == 0) {
 			return false;
 		}
@@ -163,7 +147,6 @@ public class AddressBookService {
 	}
 
 	public void updateContactEmailId(String firstName, String emailId) {
-		// TODO Auto-generated method stub
 		int result;
 		try {
 			result = addressBookDBService.updateContactData(firstName, emailId);
@@ -173,16 +156,13 @@ public class AddressBookService {
 			if (addressBookData != null)
 				addressBookData.setEmailId(emailId);
 		} catch (AddressBookException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void deleteContact(String firstName) {
-		// TODO Auto-generated method stub
 		int result;
 		try {
 			result = addressBookDBService.deleteContactData(firstName);
@@ -194,25 +174,20 @@ public class AddressBookService {
 				addressBookList.remove(addressBookList.indexOf(addressBookData));
 			}
 		} catch (AddressBookException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public List<Contacts> queryBasisPlace(String placeName, String placeType) {
-		// TODO Auto-generated method stub
 		int result;
 		List<Contacts> contactsList = null;
 		try {
 			contactsList = addressBookDBService.retrievePlaceDetails(placeName, placeType);
 		} catch (AddressBookException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (contactsList.size() == 0) {
@@ -228,7 +203,6 @@ public class AddressBookService {
 	}
 
 	public List<Contacts> sortContactsBasisContactName() throws Exception {
-		// TODO Auto-generated method stub
 		this.addressBookList = addressBookDBService.readData();
 		Collections.sort(addressBookList, new Comparator<Contacts>() {
 			@Override
@@ -240,7 +214,6 @@ public class AddressBookService {
 	}
 
 	public List<Contacts> sortContactsBasisCityStateOrZip(String sortingBasis) throws Exception {
-		// TODO Auto-generated method stub
 		this.addressBookList = addressBookDBService.readData();
 		sortingBasis = sortingBasis.toLowerCase();
 		if (sortingBasis.equals("city")) {
@@ -269,15 +242,12 @@ public class AddressBookService {
 	}
 
 	public int getDetailsBetweenAPeriod(LocalDate date1, LocalDate date2) throws AddressBookException, Exception {
-		// TODO Auto-generated method stub
 		List<Contacts> resultList;
 		try {
 			resultList = addressBookDBService.queryForContactDetailsBetweenAParticularPeriod(date1, date2);
 		} catch (AddressBookException e) {
-			// TODO Auto-generated catch block
 			throw new AddressBookException("Oops there's an exception!!!");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			throw new AddressBookException("Oops there's an exception!!!");
 		}
 		if (resultList == null) {
