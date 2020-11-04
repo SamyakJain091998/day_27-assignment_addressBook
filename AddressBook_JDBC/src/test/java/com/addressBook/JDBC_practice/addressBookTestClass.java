@@ -252,6 +252,7 @@ public class addressBookTestClass {
 
 	}
 
+	@Ignore
 	@Test
 	public void givenMultipleContacts_WhenAdded_ShouldMatchTheCount() {
 
@@ -277,9 +278,33 @@ public class addressBookTestClass {
 		}
 
 		long entries = addressBookService.countEntries();
-		
+
 		System.out.println("----Number of entries : " + entries);
 		Assert.assertEquals(4, entries);
+	}
+
+	@Test
+	public void givenNewLastNameForContact_WhenUpdated_ShouldMatch200response() throws AddressBookException {
+
+		AddressBookService addressBookService;
+		Contacts[] arrayOfContacts = getContactsList();
+		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+
+		addressBookService.updateContactLastNameOnJsonServer("Manu", "jainnn");
+		Contacts contactData = addressBookService.getAddressBookData("Manu");
+
+		String empJson = new Gson().toJson(contactData);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		request.body(empJson);
+		Response response = request.put("/address_book_table/" + contactData.getId());
+		int statusCode = response.getStatusCode();
+		System.out.println("===========> Status code is : " + statusCode);
+		Assert.assertEquals(200, statusCode);
+
+		long entries = addressBookService.countEntries();
+		System.out.println("----Number of entries : " + entries);
+		Assert.assertEquals(6, entries);
 	}
 
 }

@@ -46,7 +46,7 @@ public class AddressBookService {
 		return this.typicalAddressBookList;
 	}
 
-	private Contacts getAddressBookData(String firstName) {
+	public Contacts getAddressBookData(String firstName) {
 		Contacts addressBookData;
 		addressBookData = this.addressBookList.stream()
 				.filter(addressBookDataItem -> addressBookDataItem.getFirstName().equals(firstName)).findFirst()
@@ -60,6 +60,18 @@ public class AddressBookService {
 				typicalAddressBookDataItem -> typicalAddressBookDataItem.getAddressBookName().equals(address_book_name))
 				.findFirst().orElse(null);
 		return typicalAddressBookData;
+	}
+
+	public void updateContactLastNameOnJsonServer(String firstName, String lastName) throws AddressBookException {
+		// TODO Auto-generated method stub
+		try {
+			Contacts contactData = this.getAddressBookData(firstName);
+			if (contactData != null)
+				contactData.setLastName(lastName);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void addContactToAddressBook(String firstName, String lastName, String address, String city, String state,
