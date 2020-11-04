@@ -277,6 +277,7 @@ public class addressBookTestClass {
 		}
 
 		long entries = addressBookService.countEntries();
+		
 		System.out.println("----Number of entries : " + entries);
 		Assert.assertEquals(4, entries);
 	}
