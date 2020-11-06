@@ -16,6 +16,9 @@ import com.google.gson.*;
 import io.restassured.*;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import com.addressBook.service.*;
+import com.addressBook.JDBC_practice_Exception.AddressBookException;
+import com.addressBook.pojoClasses.*;
 
 public class addressBookTestClass {
 
@@ -315,7 +318,7 @@ public class addressBookTestClass {
 		Contacts[] arrayOfContacts = getContactsList();
 		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
 
-		Contacts contactData = addressBookService.getAddressBookData("Manu");
+		Contacts contactData = addressBookService.getAddressBookData("Sammy");
 
 		RequestSpecification request = RestAssured.given();
 		request.header("Content-Type", "application/json");
@@ -326,7 +329,7 @@ public class addressBookTestClass {
 		addressBookService.deleteContact(contactData.getFirstName());
 
 		try {
-			boolean result = addressBookService.checkAddressBookInSyncWithDB("Manu");
+			boolean result = addressBookService.checkAddressBookInSyncWithDB("Sammy");
 			System.out.println("result it : --------------> " + result);
 			Assert.assertFalse(result);
 		} catch (Exception e) {

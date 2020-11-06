@@ -1,4 +1,4 @@
-package com.addressBook.JDBC_practice;
+package com.addressBook.JDBC_practice_Exception;
 
 public class AddressBookException extends Exception {
 

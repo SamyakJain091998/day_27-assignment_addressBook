@@ -1,4 +1,4 @@
-package com.addressBook.JDBC_practice;
+package com.addressBook.pojoClasses;
 
 import java.sql.Date;
 
